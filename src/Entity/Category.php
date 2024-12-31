@@ -8,10 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-
-#[UniqueEntity('title', 'category.unique')]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -20,17 +16,10 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 1,
-        max: 255,
-        minMessage: 'The title must be at least {{ limit }} characters long',
-        maxMessage: 'The title cannot be longer than {{ limit }} characters',
-    )]
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     /**
@@ -49,14 +38,14 @@ class Category
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): static
+    public function setName(string $name): static
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -66,7 +55,7 @@ class Category
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
