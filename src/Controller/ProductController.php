@@ -26,7 +26,7 @@ class ProductController extends AbstractController
     public function create(): Response
     {
         // 2 in 1 route: view product creation form and handle product creation request
-        return $this->render('product/index.html.twig', [
+        return $this->render('product/add.html.twig', [
             'controller_name' => 'ProductController',
         ]);
     }

@@ -10,6 +10,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CategoryController extends AbstractController
 {
+    #[Route("/page-test", name:"test")]
+    public function test(): Response
+    {
+        return $this->render('categorie/test.html.twig');
+    }
     #[Route('/categories', name: 'app_categories')]
     public function index(): Response
     {
