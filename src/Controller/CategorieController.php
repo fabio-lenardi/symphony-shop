@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CategorieController extends AbstractController
 {
-    #[Route('/prenom/{prenom}', name: 'homepage')]
+    #[Route('/prenom/{prenom}', name: 'app_home')]
     public function index(string $prenom): Response
     {
         return $this->render('categorie/index.html.twig', [
