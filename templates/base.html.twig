@@ -19,10 +19,10 @@
 			<nav>
 				<ul>
 					<li>
-						<a href="{{path('app_home',{prenom:'Machin'})}}">accueil</a>
+						<a href="{{path('app_home')}}">accueil</a>
 					</li>
 					<li>
-						<a href="{{path('test')}}">basket</a>
+						<a href="{{path('app_basket')}}">basket</a>
 					</li>
 					{% if app.user is not null %}
 						<li>

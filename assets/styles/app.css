@@ -9,3 +9,9 @@ body {
 .error{
     background-color: lightcoral;
 }
+
+header nav ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
