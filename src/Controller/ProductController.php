@@ -2,73 +2,52 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Form\ProductType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProductController extends AbstractController
 {
-    #[Route('/product', name: 'app_product')]
-    public function index(EntityManagerInterface $em, Request $request): Response
+    #[Route('/products', name: 'homepage')]
+    public function index(): Response
     {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('image')->getData();
- 
-            if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
- 
-                try {
-                    $imageFile->move(
-                        $this->getParameter('upload_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('error', "Impossible d'ajouter l'image");
-                    return $this->redirectToRoute('app_product');
-                }
- 
-                $product->setImage($newFilename);
-            }
-
-            $em->persist($product);
-            $em->flush();
-            $this->addFlash('success', 'Produit ajouté');
-            return $this->redirectToRoute('app_product');
-        }
-
-        $products = $em->getRepository(Product::class)->findAll();
-
-        return $this->render('product/index.html.twig', [
-            'products' => $products,
-            'ajout_produit' => $form
+        return $this->render('index.html.twig', [
+            'controller_name' => 'ProductController',
         ]);
     }
 
-    #[Route('/product/delete/{id}', name: 'app_product_delete')]
-    public function delete(Request $request, EntityManagerInterface $em, Product $product = null)
+    #[Route('/product/create', name: 'app_create_product')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function create(): Response
     {
-        if($product == null){
-            $this->addFlash('error', 'Produit introuvable');
-            return $this->redirectToRoute('app_product');
-        }
-
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('csrf'))) {
-            $em->remove($product);
-            $em->flush();
-            
-            $this->addFlash('success', 'Produit supprimé');
-        }
-        return $this->redirectToRoute('app_product');
+        // 2 in 1 route: view product creation form and handle product creation request
+        return $this->render('product/add.html.twig', [
+            'controller_name' => 'ProductController',
+        ]);
     }
+
+    #[Route('/product/delete/{id}', name: 'app_delete_product')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(): Response
+    {
+        // 2 in 1 route: view product deletion form and handle product creation request
+        return $this->render('product/add.html.twig', [
+            'controller_name' => 'ProductController',
+        ]);
+    }
+
+    #[Route('/product/{id}', name: 'app_view_product')]
+    public function view(): Response
+    {
+        return $this->render('product/add.html.twig', [
+            'controller_name' => 'ProductController',
+        ]);
+    }
+
+
 }

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des produits</h1>
+	{#{% for p in products %}
+		<p>{{p.title}}</p>
+		{% if p.image is not empty %}
+			<img src="{{ asset('uploads/' ~ p.image) }}" style="max-width:100px;">
+		{% endif %}
+		<hr>
+	{% else %}
+		<p>Aucun produit</p>
+	{% endfor %}#}
+{% endblock %}
