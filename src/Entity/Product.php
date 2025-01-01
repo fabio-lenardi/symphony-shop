@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,17 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    /**
+     * @var Collection<int, BasketContent>
+     */
+    #[ORM\OneToMany(targetEntity: BasketContent::class, mappedBy: 'product', orphanRemoval: true)]
+    private Collection $basketContents;
+
+    public function __construct()
+    {
+        $this->basketContents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +119,36 @@ class Product
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BasketContent>
+     */
+    public function getBasketContents(): Collection
+    {
+        return $this->basketContents;
+    }
+
+    public function addBasketContent(BasketContent $basketContent): static
+    {
+        if (!$this->basketContents->contains($basketContent)) {
+            $this->basketContents->add($basketContent);
+            $basketContent->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBasketContent(BasketContent $basketContent): static
+    {
+        if ($this->basketContents->removeElement($basketContent)) {
+            // set the owning side to null (unless already changed)
+            if ($basketContent->getProduct() === $this) {
+                $basketContent->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!
+{% endblock %}
+
+{% block body %}
+	<h1>Ajouter catégorie</h1>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		<h2>Ajouter un produit</h2>
+		{{form(add_category)}}
+	{% endif %}{% endblock %}
