@@ -6,7 +6,9 @@
 {% block body %}
 	<h1>Products Catalog</h1>
 	{% for p in products %}
-		<p>{{p.name}}</p>
+		<a href="{{ path('app_product_view', {id: p.id}) }}">
+			<p>{{p.name}}</p>
+		</a>
 		{% if p.image is not empty %}
 			<img src="{{ asset('uploads/' ~ p.image) }}" style="max-width:100px;">
 		{% endif %}
