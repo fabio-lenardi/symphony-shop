@@ -16,23 +16,18 @@ use Symfony\Component\HttpFoundation\Request;               // use form submissi
 
 class CategoryController extends AbstractController
 {
-    #[Route("/page-test", name: "test")]
+    #[Route('/categories', name: 'app_categories')]
+    public function index(): Response
+    {
+        return $this->render('category/index.html.twig', [
+            'controller_name' => 'CategoryController',
+        ]);
+    }
+   
+    #[Route("/page-test", name:"test")]
     public function test(): Response
     {
         return $this->render('categorie/test.html.twig');
-    }
-
-    #[Route('/categories', name: 'app_categories')]
-    public function index(EntityManagerInterface $em): Response
-    {
-        $categories = $em->getRepository(Category::class)->findAll();
-
-        return $this->render(
-            'category/index.html.twig',
-            [
-                'categories' => $categories,
-            ]
-        );
     }
 
     #[Route('/category/create', name: 'app_category_create')]
@@ -75,3 +70,4 @@ class CategoryController extends AbstractController
         return $this->redirectToRoute('app_categories');   
     }
 }
+

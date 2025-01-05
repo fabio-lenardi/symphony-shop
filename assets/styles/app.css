@@ -1,5 +1,6 @@
 body {
     background-color: white;
+    margin: 1rem;
 }
 
 .success{
@@ -14,4 +15,14 @@ header nav ul {
     display: flex;
     justify-content: space-between;
     list-style: none;
+}
+.product-list {
+    display: flex;
+    gap : 2rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.product {
+    display: block;
 }
