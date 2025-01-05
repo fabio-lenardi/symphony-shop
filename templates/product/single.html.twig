@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Products Catalog</h1>
 		<p>{{product.name}}</p>
 		{% if product.image is not empty %}
 			<img src="{{ asset('uploads/' ~ product.image) }}" style="max-width:100px;">
 		{% endif %}
+		<p>{{product.description}}</p>
 
 		{% if is_granted('ROLE_ADMIN') %}
 			<form action="{{path('app_product_delete', {id: product.id})}}" method="POST">
