@@ -10,6 +10,11 @@
 		{% endif %}
 		<p>{{product.description}}</p>
 
+		<form action="{{path('app_basket_add', {id: product.id})}}" method="POST">
+				{# <input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ product.id) }}"> #}
+				<input type="submit" value="Put in basket">
+			</form>
+
 		{% if is_granted('ROLE_ADMIN') %}
 			<form action="{{path('app_product_delete', {id: product.id})}}" method="POST">
 				<input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ product.id) }}">
